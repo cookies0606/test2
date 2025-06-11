@@ -18,6 +18,30 @@ cursor.execute("""
         email TEXT
     )
 """)
+# 출퇴근 테이블
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS attendance_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        employee_id INTEGER,
+        date TEXT,
+        clock_in TEXT,
+        clock_out TEXT,
+        location TEXT
+    )
+""")
+
+# 휴가 테이블
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS vacations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        employee_id INTEGER,
+        vacation_type TEXT,
+        start_date TEXT,
+        end_date TEXT,
+        days INTEGER,
+        reason TEXT
+    )
+""")
 conn.commit()
 
 # Streamlit UI
