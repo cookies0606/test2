@@ -48,7 +48,7 @@ conn.commit()
 st.set_page_config(page_title="인사 관리 시스템", layout="wide")
 st.title("🧑‍💼 인사 관리 시스템 ")
 
-menu = st.sidebar.radio("인사 관리 시스템", ["직원 등록", "직원 목록", "직원 수정", "직원 삭제"])
+menu = st.sidebar.radio("인사 관리 시스템", ["직원 등록", "직원 목록", "직원 수정", "직원 삭제", "출근/퇴근 기록", "휴가 기록"])
 
 # 직원 등록
 if menu == "직원 등록":
@@ -113,3 +113,24 @@ elif menu == "직원 삭제":
         cursor.execute("DELETE FROM employees WHERE id=?", (selected_id,))
         conn.commit()
         st.warning("직원 정보가 삭제되었습니다.")
+
+
+elif menu == "출근/퇴근 기록":
+    st.subheader("🕒 출근 / 퇴근 기록")
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    location = st.selectbox("위치", ["본사", "재택"])
+
+    if st.button("출근"):
+        today = datetime.now().date().isoformat()
+        cursor.execute("INSERT INTO attendance_logs (employee_id, date, clock_in, location) VALUES (?, ?, ?, ?)",
+                       (EMPLOYEE_ID, today, now, location))
+        conn.commit()
+        st.success(f"출근 시간 기록됨: {now}")
+    
+    if st.button("퇴근"):
+        today = datetime.now().date().isoformat()
+        cursor.execute("UPDATE attendance_logs SET clock_out=? WHERE employee_id=? AND date=?",
+                       (now, EMPLOYEE_ID, today))
+        conn.commit()
+        st.success(f"퇴근 시간 기록됨: {now}")
+    
