@@ -134,20 +134,4 @@ elif menu == "출근/퇴근 기록":
         conn.commit()
         st.success(f"퇴근 시간 기록됨: {now}")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("출근"):
-        today = datetime.now().date().isoformat()
-        cursor.execute("INSERT INTO attendance_logs (employee_id, date, clock_in, location) VALUES (?, ?, ?, ?)",
-                       (EMPLOYEE_ID, today, now, location))
-        conn.commit()
-        st.success(f"출근 시간 기록됨: {now}")
-
-    with col2:
-        if st.button("퇴근"):
-        today = datetime.now().date().isoformat()
-        cursor.execute("UPDATE attendance_logs SET clock_out=? WHERE employee_id=? AND date=?",
-                       (now, EMPLOYEE_ID, today))
-        conn.commit()
-        st.success(f"퇴근 시간 기록됨: {now}")
     
