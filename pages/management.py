@@ -120,7 +120,7 @@ elif menu == "출근/퇴근 기록":
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     location = st.selectbox("위치", ["본사", "재택"])
     df = pd.read_sql_query("SELECT * FROM employees", conn)
-    employee_id = st.selectbox("직원 선택 (ID)", df["id"].tolist())
+    EMPLOYEE_ID = int(st.selectbox("직원 선택 (ID)", df["id"].tolist()))
 
     col1, col2 = st.columns([1,1])
 
