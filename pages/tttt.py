@@ -45,24 +45,3 @@ with st.form("vacation_form"):
                        (EMPLOYEE_ID, vacation_type, start_date.isoformat(), end_date.isoformat(), days, reason))
         conn.commit()
         st.success(f"{days}일 휴가 등록 완료")
-
-# 주간/월간 누적 시간 계산
-st.header("📊 누적 근무 시간")
-
-df = pd.read_sql_query("""
-SELECT date, clock_in, clock_out FROM attendance_logs
-WHERE employee_id=? ORDER BY date DESC LIMIT 30
-""", conn, params=(EMPLOYEE_ID,))
-
-def calculate_hours(row):
-    if pd.notnull(row["clock_in"]) and pd.notnull(row["clock_out"]):
-        start = datetime.strptime(row["clock_in"], "%Y-%m-%d %H:%M:%S")
-        end = datetime.strptime(row["clock_out"], "%Y-%m-%d %H:%M:%S")
-        return round((end - start).total_seconds() / 3600, 2)
-    return 0
-
-df["근무시간(시간)"] = df.apply(calculate_hours, axis=1)
-
-st.dataframe(df)
-st.metric("최근 7일 근무시간 합계", f"{df.head(7)['근무시간(시간)'].sum():.2f} 시간")
-st.metric("최근 30일 근무시간 합계", f"{df['근무시간(시간)'].sum():.2f} 시간")
