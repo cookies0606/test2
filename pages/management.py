@@ -121,7 +121,7 @@ elif menu == "출근/퇴근 기록":
     location = st.selectbox("위치", ["본사", "재택"])
 
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1,1])
 
     with col1:
         if st.button("출근"):
