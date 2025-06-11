@@ -13,7 +13,7 @@ EMPLOYEE_ID = 1
 st.header("🕒 출근 / 퇴근 기록")
 
 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-location = st.text_input("위치 (예: Busan 본사, 재택 등)")
+location = st.selectbox("위치", ["본사", "재택"])
 
 if st.button("출근"):
     today = datetime.now().date().isoformat()
