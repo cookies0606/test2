@@ -130,7 +130,7 @@ elif menu == "출근/퇴근 기록":
             cursor.execute("INSERT INTO attendance_logs (employee_id, date, clock_in, location) VALUES (?, ?, ?, ?)",
                            (EMPLOYEE_ID, today, now, location))
             conn.commit()
-            attendance = now
+            st.session_state.attendance = now
             st.success(f"출근 시간 기록됨: {now}")
     with col2:
         if st.button("퇴근"):
@@ -138,10 +138,12 @@ elif menu == "출근/퇴근 기록":
             cursor.execute("UPDATE attendance_logs SET clock_out=? WHERE employee_id=? AND date=?",
                            (now, EMPLOYEE_ID, today))
             conn.commit()
-            leave = now
+            st.session_state.leave = now
             st.success(f"퇴근 시간 기록됨: {now}")
     st.subheader("근무 시간 확인")
     if st.button("확인"):
-        time = leave - attendance
-        st.success(f"근무 시간: {time}")
-    
+        if "attendance" in st.session_state and "leave" in st.session_state:
+            work_time = st.session_state.leave - st.session_state.attendance
+            st.success(f"근무 시간: {work_time}")
+        else:
+            st.warning("출근 및 퇴근 시간을 먼저 기록하세요.")
