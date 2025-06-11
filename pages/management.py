@@ -119,7 +119,7 @@ elif menu == "출근/퇴근 기록":
     st.subheader("🕒 출근 / 퇴근 기록")
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     location = st.selectbox("위치", ["본사", "재택"])
-
+    employee_id = st.selectbox("직원 선택 (ID)", df["id"])
 
     col1, col2 = st.columns([1,1])
 
